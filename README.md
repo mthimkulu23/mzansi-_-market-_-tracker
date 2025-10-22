@@ -26,7 +26,7 @@ If you’d like to try it yourself:
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/mzansi-market-tracker.git
+git clone https://github.com/mthimkulu23/mzansi-_-market-_-tracker.git
 
 
 # Move into the project directory
