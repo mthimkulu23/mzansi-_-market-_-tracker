@@ -152,7 +152,7 @@ def view_products():
 def main():
     print("🌍 Sawubona! Welcome to Mzansi Market Tracker!")
     create_tables()
-
+    location = ("Soweto", "Khayelitsha", "Tembisa", "Umlazi")
     menu = {
         "1": "Add Stall Owner",
         "2": "Add Product",
