@@ -45,6 +45,8 @@ cd mzansi-market-tracker
 # Run the program
 python market_app.py
 
+```
+
 
 
 ## 🧩 Technologies Used
