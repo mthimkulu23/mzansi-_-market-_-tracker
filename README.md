@@ -71,6 +71,4 @@ python market_app.py
 
 🚀 Data Analyst , Data Scientist / Junior Cybersecurity Analyst & Full Stack Developer
 
-🌍 Zonkizizwe, Katlehong, South Africa
-
 🔗 Portfolio: https://thabang23portfolio.netlify.app/#projects
