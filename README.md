@@ -9,44 +9,37 @@
 - 📦 Add, search, and manage **products and sales**
 - 💰 Generate **weekly sales reports**
 - 📤 Export weekly reports to **CSV format**
-- 🧾 View total revenue and stock levels
+- 🧾 View **total revenue** and **stock levels**
 - ⚙️ Error handling using **try-except blocks**
 - 🔁 Uses **for loops** and **while loops** for control flow
-
----
-
-## 🧠 Currently Working On
-- Strengthening **PostgreSQL** and **Python fundamentals**
-- Exploring **data types** and their use in databases
-- Practicing **loops**, **exception handling**, and **data structures**
-- Enhancing CLI interactivity with emojis and user-friendly colors
-- Building a more efficient and data-driven market tracking system
+- 🎨 **Emojis and colors** for enhanced CLI readability
+- 🧑‍🦯 Accessibility-friendly menu for users with visual impairments  
 
 ---
 
 ## 🔍 Extension Challenges Implemented
 - ✅ **CSV Export** for weekly reports  
 - ✅ **Search Function** for products  
-- 🚧 **Login System for Stall Owners** *(in progress)*  
+- ✅ **Login System for Stall Owners**  
 - ✅ **Menu with Emojis and Colors** for better CLI experience  
 
 ---
 
 ## 💾 How to Clone and Run the Project
-If you’d like to try it yourself:
+
+To run it locally:
 
 ```bash
 # Clone the repository
 git clone https://github.com/mthimkulu23/mzansi-_-market-_-tracker.git
 
 # Move into the project directory
-cd mzansi-market-tracker
+cd mzansi-_-market-_-tracker
 
 # Run the program
 python market_app.py
 
 ```
-
 
 
 ## 🧩 Technologies Used
@@ -57,25 +50,27 @@ python market_app.py
 
 📊 CSV — For data export
 
-💻 Command-Line Interface — For interactive user experience
+💻 Command-Line Interface — Interactive user experience
 
 
+## 📋 Main Menu
+
+===== 🛍️ Mzansi Market Menu =====
+1️⃣  Add Stall Owner 📝
+2️⃣  Login 🔐
+3️⃣  Add Product 🛒
+4️⃣  View Products 👀
+5️⃣  Make Sale 💸
+6️⃣  Weekly Report 📊
+7️⃣  Export Weekly Report to CSV 📁
+8️⃣  Search Product 🔍
+9️⃣  Exit 🚪
 
 
-===== Mzansi Market Menu =====
-1. Add Stall Owner
-2. Add Product
-3. View Products
-4. Make Sale
-5. Weekly Report
-6. Export Weekly Report to CSV
-7. Search Product
-8. Exit
+##  👨🏽‍💻 Author
 
+🚀 Data Analyst , Data Scientist / Junior Cybersecurity Analyst & Full Stack Developer
 
-## 👨🏽‍💻 Author
-
-
-🚀 Junior Cybersecurity Analyst & Full Stack Developer
 🌍 Zonkizizwe, Katlehong, South Africa
-🔗 Portfolio - https://thabang23portfolio.netlify.app/#projects
+
+🔗 Portfolio: https://thabang23portfolio.netlify.app/#projects
