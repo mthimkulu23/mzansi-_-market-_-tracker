@@ -55,15 +55,15 @@ python market_app.py
 
 ## 📋 Main Menu
 
-===== 🛍️ Mzansi Market Menu =====
-1️⃣  Add Stall Owner 📝
-2️⃣  Login 🔐
-3️⃣  Add Product 🛒
-4️⃣  View Products 👀
-5️⃣  Make Sale 💸
-6️⃣  Weekly Report 📊
-7️⃣  Export Weekly Report to CSV 📁
-8️⃣  Search Product 🔍
+===== 🛍️ Mzansi Market Menu ===== <br>
+1️⃣  Add Stall Owner 📝 <br>
+2️⃣  Login 🔐 <br>
+3️⃣  Add Product 🛒 <br>
+4️⃣  View Products 👀 <br>
+5️⃣  Make Sale 💸 <br>
+6️⃣  Weekly Report 📊 <br>
+7️⃣  Export Weekly Report to CSV 📁 <br>
+8️⃣  Search Product 🔍 <br>
 9️⃣  Exit 🚪
 
 
