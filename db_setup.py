@@ -91,6 +91,11 @@ def get_login(cursor, name, password):
             SELECT * FROM Stall_Owners 
             WHERE LOWER(name) = LOWER(%s) AND password = %s
         """, (name, password))
+
+def display_product(cursor , owner_id):
+     cursor.execute("""
+            SELECT name, price, stock FROM Products WHERE owner_id = %s
+        """, (owner_id,))
         
     
   

@@ -7,6 +7,7 @@ from db_setup import add_stall_owner
 from db_setup import get_product
 from db_setup import get_sale
 from db_setup import get_login
+from db_setup import display_product
 # 
 # Bold text
 BOLD = '\033[1m'
@@ -99,9 +100,10 @@ def view_my_products(owner_id):
     conn = create_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("""
-            SELECT name, price, stock FROM Products WHERE owner_id = %s
-        """, (owner_id,))
+        # cursor.execute("""
+        #     SELECT name, price, stock FROM Products WHERE owner_id = %s
+        # """, (owner_id,))
+        display_product(cursor, owner_id)
         products = cursor.fetchall()
         if products:
             print(Fore.CYAN + BOLD + "\n📋 Your Products:" + RESET)
