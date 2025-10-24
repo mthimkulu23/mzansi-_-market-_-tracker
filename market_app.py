@@ -2,45 +2,20 @@ import psycopg2
 from datetime import date
 import csv
 from colorama import Fore, Style
+from db_setup import create_connection
+from db_setup import register_stall_owner
+from db_setup import add_product
 
 # Bold text
 BOLD = '\033[1m'
 RESET = Style.RESET_ALL
 
-def get_connection():
-    return psycopg2.connect(
-        host="localhost",
-        database="mzansi_market",
-        user="postgres",
-        password="mypassword"
-    )
 
 # -- Stall Owner Functions --
-def register_stall_owner():
-    conn = get_connection()
-    cursor = conn.cursor()
-    name = input("👤 Enter your name: ").strip()
-    location = input("📍 Enter your location: ").strip()
-    password = input("🔑 Create a password: ").strip()
 
-    try:
-        cursor.execute("""
-            INSERT INTO Stall_Owners (name, location, password)
-            VALUES (%s, %s, %s)
-        """, (name, location, password))
-        conn.commit()
-        print(Fore.GREEN + "✅ Registration successful! You can now log in." + RESET)
-    except psycopg2.errors.UniqueViolation:
-        print(Fore.RED + "❌ Name already exists. Try a different name." + RESET)
-        conn.rollback()
-    except Exception as e:
-        print(Fore.RED + f"❌ Error registering: {e}" + RESET)
-    finally:
-        cursor.close()
-        conn.close()
 
 def login_stall_owner():
-    conn = get_connection()
+    conn = create_connection()
     cursor = conn.cursor()
     name = input("👤 Enter your name: ").strip()
     password = input("🔑 Enter your password: ").strip()
@@ -65,31 +40,10 @@ def login_stall_owner():
         cursor.close()
         conn.close()
 
-# -- Product Functions --
-def add_product(owner_id=None):
-    conn = get_connection()
-    cursor = conn.cursor()
-    name = input("🛒 Enter product name: ").strip()
-    price = float(input("💰 Enter product price: "))
-    stock = int(input("📦 Enter product stock: "))
-    if owner_id is None:
-        owner_id = int(input("🧾 Enter owner ID: "))
 
-    try:
-        cursor.execute("""
-            INSERT INTO Products (name, price, stock, owner_id)
-            VALUES (%s, %s, %s, %s)
-        """, (name, price, stock, owner_id))
-        conn.commit()
-        print(Fore.GREEN + "✅ Product added successfully!" + RESET)
-    except Exception as e:
-        print(Fore.RED + f"❌ Error adding product: {e}" + RESET)
-    finally:
-        cursor.close()
-        conn.close()
 
 def view_my_products(owner_id):
-    conn = get_connection()
+    conn = create_connection()
     cursor = conn.cursor()
     try:
         cursor.execute("""
@@ -109,7 +63,7 @@ def view_my_products(owner_id):
         conn.close()
 
 def search_product():
-    conn = get_connection()
+    conn = create_connection()
     cursor = conn.cursor()
     keyword = input("🔍 Enter product name to search: ").strip()
 
@@ -135,7 +89,7 @@ def search_product():
 
 # -- Weekly Report Functions --
 def generate_weekly_report():
-    conn = get_connection()
+    conn = create_connection()
     cursor = conn.cursor()
     try:
         cursor.execute("""
@@ -167,7 +121,7 @@ def generate_weekly_report():
         
 # -- Make Sale --
 def make_sale():
-    conn = get_connection()
+    conn = create_connection()
     cursor = conn.cursor()
     try:
         # Show all products
@@ -317,6 +271,7 @@ def main():
             break
         else:
             print(Fore.RED + BOLD + "❌ INVALID MENU OPTION. TRY AGAIN." + RESET)
+            
 
 if __name__ == "__main__":
     main()
