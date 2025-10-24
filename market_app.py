@@ -2,7 +2,7 @@ import psycopg2
 from datetime import date
 import csv
 from colorama import Fore, Style
-from db_setup import create_connection
+from db_setup import create_connection, create_tables
 from db_setup import add_stall_owner
 from db_setup import get_product
 from db_setup import get_sale
@@ -283,7 +283,7 @@ def login_menu():
 
         choice = input(Fore.CYAN + BOLD + "\n👉 Enter your choice: " + RESET).strip()
         if choice == "1":
-            add_stall_owner()
+            register_stall_owner2()  # Changed from add_stall_owner() to register_stall_owner2()
         elif choice == "2":
             user = login_stall_owner()
             if user:
@@ -296,7 +296,7 @@ def login_menu():
 # -- Main Menu --
 def main():
     print(Fore.CYAN + BOLD + "\n🌍 SAWUBONA! WELCOME TO MZANSI MARKET TRACKER!" + RESET)
-
+    create_tables()
     while True:
         print("\n" + BOLD + "="*60 + RESET)
         print(Fore.YELLOW + BOLD + "            🛍️  MZANSI MARKET MENU  🛍️" + RESET)
