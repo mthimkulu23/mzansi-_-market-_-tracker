@@ -3,15 +3,41 @@ from datetime import date
 import csv
 from colorama import Fore, Style
 from db_setup import create_connection
-from db_setup import register_stall_owner
-from db_setup import add_product
-
+from db_setup import add_stall_owner
+from db_setup import get_product
+from db_setup import get_sale
+from db_setup import get_login
+# 
 # Bold text
 BOLD = '\033[1m'
 RESET = Style.RESET_ALL
 
 
-# -- Stall Owner Functions --
+def register_stall_owner2():
+    conn = create_connection()
+    cursor = conn.cursor()
+    name = input("👤 Enter your name: ").strip()
+    location = input("📍 Enter your location: ").strip()
+    password = input("🔑 Create a password: ").strip()
+
+    try:
+        # cursor.execute("""
+        #     INSERT INTO Stall_Owners (name, location, password)
+        #     VALUES (%s, %s, %s)
+        # """, (name, location, password))
+        
+        add_stall_owner(cursor, name, location, password)
+        
+        conn.commit()
+        print(Fore.GREEN + "✅ Registration successful! You can now log in." + RESET)
+    except psycopg2.errors.UniqueViolation:
+        print(Fore.RED + "❌ Name already exists. Try a different name." + RESET)
+        conn.rollback()
+    except Exception as e:
+        print(Fore.RED + f"❌ Error registering: {e}" + RESET)
+    finally:
+        cursor.close()
+        conn.close()
 
 
 def login_stall_owner():
@@ -21,10 +47,12 @@ def login_stall_owner():
     password = input("🔑 Enter your password: ").strip()
 
     try:
-        cursor.execute("""
-            SELECT * FROM Stall_Owners 
-            WHERE LOWER(name) = LOWER(%s) AND password = %s
-        """, (name, password))
+        # cursor.execute("""
+        #     SELECT * FROM Stall_Owners 
+        #     WHERE LOWER(name) = LOWER(%s) AND password = %s
+        # """, (name, password))
+        
+        get_login(cursor,name, password)
         owner = cursor.fetchone()
 
         if owner:
@@ -36,6 +64,31 @@ def login_stall_owner():
     except Exception as e:
         print(Fore.RED + f"❌ Error during login: {e}" + RESET)
         return None
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def get_product2(owner_id=None):
+    conn = create_connection()
+    cursor = conn.cursor()
+    name = input("🛒 Enter product name: ").strip()
+    price = float(input("💰 Enter product price: "))
+    stock = int(input("📦 Enter product stock: "))
+    if owner_id is None:
+        owner_id = int(input("🧾 Enter owner ID: "))
+
+    try:
+        # cursor.execute("""
+        #     INSERT INTO Products (name, price, stock, owner_id)
+        #     VALUES (%s, %s, %s, %s)
+        # """, (name, price, stock, owner_id))
+        get_product(cursor, name, price, stock, owner_id)
+        
+        conn.commit()
+        print(Fore.GREEN + "✅ Product added successfully!" + RESET)
+    except Exception as e:
+        print(Fore.RED + f"❌ Error adding product: {e}" + RESET)
     finally:
         cursor.close()
         conn.close()
@@ -61,6 +114,9 @@ def view_my_products(owner_id):
     finally:
         cursor.close()
         conn.close()
+        
+        
+        
 
 def search_product():
     conn = create_connection()
@@ -73,6 +129,7 @@ def search_product():
             FROM Products p
             JOIN Stall_Owners s ON p.owner_id = s.id
             WHERE LOWER(p.name) LIKE LOWER(%s)
+        
         """, (f"%{keyword}%",))
         results = cursor.fetchall()
         if results:
@@ -125,11 +182,11 @@ def make_sale():
     cursor = conn.cursor()
     try:
         # Show all products
-        cursor.execute("""
-            SELECT p.id, p.name, p.price, p.stock, s.name AS owner_name
-            FROM Products p
-            JOIN Stall_Owners s ON p.owner_id = s.id
-        """)
+        # cursor.execute("""
+        #     SELECT p.id, p.name, p.price, p.stock, s.name AS owner_name
+        #     FROM Products p
+        #     JOIN Stall_Owners s ON p.owner_id = s.id
+        # """)
         products = cursor.fetchall()
         if not products:
             print(Fore.YELLOW + "ℹ️ No products available for sale." + RESET)
@@ -156,12 +213,15 @@ def make_sale():
         total_amount = quantity * price
 
         # Deduct stock
-        cursor.execute("UPDATE Products SET stock = stock - %s WHERE id = %s", (quantity, product_id))
+      
         # Insert into Sales table including total_amount
-        cursor.execute("""
-            INSERT INTO Sales (product_id, quantity, total_amount, sale_date)
-            VALUES (%s, %s, %s, CURRENT_DATE)
-        """, (product_id, quantity, total_amount))
+        # cursor.execute("""
+        #     INSERT INTO Sales (product_id, quantity, total_amount, sale_date)
+        #     VALUES (%s, %s, %s, CURRENT_DATE)
+        # """, (product_id, quantity, total_amount))
+        get_sale(cursor, product_id, quantity, total_amount)
+        
+    
         conn.commit()
         print(Fore.GREEN + f"✅ Sale recorded successfully! {quantity} unit(s) sold for R{total_amount}." + RESET)
 
@@ -202,7 +262,7 @@ def user_dashboard(user):
 
         choice = input(Fore.CYAN + BOLD + "\n👉 Enter your choice: " + RESET).strip()
         if choice == "1":
-            add_product(owner_id=user[0])
+            get_product2(owner_id=user[0])
         elif choice == "2":
             view_my_products(user[0])
         elif choice == "3":
@@ -221,7 +281,7 @@ def login_menu():
 
         choice = input(Fore.CYAN + BOLD + "\n👉 Enter your choice: " + RESET).strip()
         if choice == "1":
-            register_stall_owner()
+            add_stall_owner()
         elif choice == "2":
             user = login_stall_owner()
             if user:
@@ -253,11 +313,11 @@ def main():
 
         choice = input(Fore.CYAN + BOLD + "\n👉 ENTER YOUR CHOICE: " + RESET).strip()
         if choice == "1":
-            register_stall_owner()
+            register_stall_owner2()
         elif choice == "2":
             login_menu()
         elif choice == "3":
-            add_product()
+            get_product2()
         elif choice == "5":
             make_sale()
         elif choice == "6":

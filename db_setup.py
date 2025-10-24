@@ -60,52 +60,44 @@ def create_tables():
     conn.close()
     
 
-def register_stall_owner():
-    conn = create_connection()
-    cursor = conn.cursor()
-    name = input("👤 Enter your name: ").strip()
-    location = input("📍 Enter your location: ").strip()
-    password = input("🔑 Create a password: ").strip()
-
-    try:
-        cursor.execute("""
+def add_stall_owner(cursor, name, location, password):
+  
+    cursor.execute("""
             INSERT INTO Stall_Owners (name, location, password)
             VALUES (%s, %s, %s)
         """, (name, location, password))
-        conn.commit()
-        print(Fore.GREEN + "✅ Registration successful! You can now log in." + RESET)
-    except psycopg2.errors.UniqueViolation:
-        print(Fore.RED + "❌ Name already exists. Try a different name." + RESET)
-        conn.rollback()
-    except Exception as e:
-        print(Fore.RED + f"❌ Error registering: {e}" + RESET)
-    finally:
-        cursor.close()
-        conn.close()
+
+def get_product(cursor,name, price, stock, owner_id):
+    cursor.execute( """
+                   INSERT INTO Products (name, price, stock, owner_id)
+                   VALUES (%s, %s, %s, %s)
+                    """, (name, price, stock, owner_id))
+
+def get_sale( cursor,product_id, quantity, total_amount):
+      cursor.execute("""
+            INSERT INTO Sales (product_id, quantity, total_amount, sale_date)
+            VALUES (%s, %s, %s, CURRENT_DATE)
+        """, (product_id, quantity, total_amount))
+      cursor.execute("UPDATE Products SET stock = stock - %s WHERE id = %s", (quantity, product_id))
+      cursor.execute("""
+            SELECT p.id, p.name, p.price, p.stock, s.name AS owner_name
+            FROM Products p
+            JOIN Stall_Owners s ON p.owner_id = s.id
+        """)
+
+
+def get_login(cursor, name, password):
+    cursor.execute("""
+            SELECT * FROM Stall_Owners 
+            WHERE LOWER(name) = LOWER(%s) AND password = %s
+        """, (name, password))
+        
+    
+  
 
 
 # -- Product Functions --
-def add_product(owner_id=None):
-    conn = create_connection()
-    cursor = conn.cursor()
-    name = input("🛒 Enter product name: ").strip()
-    price = float(input("💰 Enter product price: "))
-    stock = int(input("📦 Enter product stock: "))
-    if owner_id is None:
-        owner_id = int(input("🧾 Enter owner ID: "))
 
-    try:
-        cursor.execute("""
-            INSERT INTO Products (name, price, stock, owner_id)
-            VALUES (%s, %s, %s, %s)
-        """, (name, price, stock, owner_id))
-        conn.commit()
-        print(Fore.GREEN + "✅ Product added successfully!" + RESET)
-    except Exception as e:
-        print(Fore.RED + f"❌ Error adding product: {e}" + RESET)
-    finally:
-        cursor.close()
-        conn.close()
 
 
 create_tables()
